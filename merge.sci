@@ -1,30 +1,47 @@
+function arr = merge_sort(arr)
+    if length(arr) <= 1 then
+        return
+    end
 
-function sortedArray = mergeSort(array)
+
+    mid = floor(length(arr) / 2);
+    left_half = arr(1:mid);
+    right_half = arr(mid+1:$);
     
-    mid = floor(length(array) / 2); 
-    left = array(1:mid);
-    right = array(mid+1:$);
+    
+    left_half = merge_sort(left_half);
+    right_half = merge_sort(right_half);
 
-    sortedLeft = mergeSort(left);
-    sortedRight = mergeSort(right);
 
-    sortedArray = merge(sortedLeft, sortedRight);
-end
+    arr = merge(left_half, right_half);
+endfunction
 
-function mergedArray = merge(left, right)
-    mergedArray = [];
-    while ~isempty(left) & ~isempty(right) do
-        if left(1) <= right(1) then
-            mergedArray = [mergedArray, left(1)];
-            left(1) = [];
+function sorted_arr = merge(left, right)
+    sorted_arr = [];
+    i = 1;
+    j = 1;
+
+
+    while i <= length(left) & j <= length(right) do
+        if left(i) < right(j) then
+            sorted_arr = [sorted_arr, left(i)];
+            i = i + 1;
         else
-            mergedArray = [mergedArray, right(1)];
-            right(1) = [];
+            sorted_arr = [sorted_arr, right(j)];
+            j = j + 1;
         end
     end
-    mergedArray = [mergedArray, left, right];
-end
 
-array = [5, 3, 8, 1, 2];
-sortedArray = mergeSort(array);
-disp(sortedArray);
+    
+    if i <= length(left) then
+        sorted_arr = [sorted_arr, left(i:$)];
+    end
+    if j <= length(right) then
+        sorted_arr = [sorted_arr, right(j:$)];
+    end
+endfunction
+
+
+arr = [38, 27, 43, 3, 9, 82, 10];
+sorted_arr = merge_sort(arr);
+disp(sorted_arr);
